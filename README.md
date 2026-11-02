@@ -1,105 +1,62 @@
-# 🖥️ Sistema de Inventário de TI
-
-## 📋 Sobre o Projeto
-
-Sistema desenvolvido para gerenciamento e controle de ativos de Tecnologia da Informação, permitindo o cadastro, consulta, movimentação e acompanhamento de equipamentos, softwares e demais recursos tecnológicos da organização.
-
-## 🎯 Objetivo
-
-O projeto tem como objetivo aplicar conceitos de análise de sistemas, levantamento de requisitos, modelagem UML e gestão de ativos de TI para apoiar a governança e o controle patrimonial dos recursos tecnológicos.
-
-## 👥 Atores
-
-- Administrador
-- Técnico de TI
-- Colaborador
-
-## ✅ Funcionalidades
-
-- Cadastro de ativos
-- Consulta de ativos
-- Controle de movimentações
-- Registro de manutenções
-- Gestão de usuários
-- Emissão de relatórios
-- Controle de status dos equipamentos
-
-## 🏛️ Diagrama de Casos de Uso
+## 🗄️ Modelo Entidade-Relacionamento (ERD)
 
 ```mermaid
-flowchart LR
+erDiagram
 
-    Admin[Administrador]
-    Tecnico[Técnico de TI]
-    Usuario[Colaborador]
+    USUARIO {
+        int id_usuario PK
+        string nome
+        string email
+        string departamento
+        string cargo
+        string telefone
+    }
 
-    Login((Login))
-    CadastroAtivo((Cadastrar Ativo))
-    EditarAtivo((Editar Ativo))
-    ConsultarAtivo((Consultar Ativo))
-    ExcluirAtivo((Excluir Ativo))
-    AlocarAtivo((Alocar Ativo ao Colaborador))
+    ATIVO {
+        int id_ativo PK
+        string patrimonio
+        string nome
+        string categoria
+        string fabricante
+        string modelo
+        string numero_serie
+        string status
+        date data_aquisicao
+    }
 
-    CadastroUsuario((Cadastrar Usuário))
-    GerarRelatorio((Gerar Relatórios))
+    MANUTENCAO {
+        int id_manutencao PK
+        int id_ativo FK
+        date data_manutencao
+        string tipo
+        string descricao
+        decimal custo
+    }
 
-    Manutencao((Registrar Manutenção))
-    Movimentacao((Registrar Movimentação))
-    AtualizarStatus((Atualizar Status))
+    MOVIMENTACAO {
+        int id_movimentacao PK
+        int id_ativo FK
+        int id_usuario FK
+        date data_movimentacao
+        string origem
+        string destino
+    }
 
-    ConsultarEquipamento((Consultar Equipamentos))
-    SolicitarSuporte((Solicitar Suporte))
+    CHAMADO {
+        int id_chamado PK
+        int id_usuario FK
+        int id_ativo FK
+        string titulo
+        string descricao
+        string status
+        date data_abertura
+    }
 
-    Admin --> Login
-    Admin --> CadastroAtivo
-    Admin --> EditarAtivo
-    Admin --> ConsultarAtivo
-    Admin --> ExcluirAtivo
-    Admin --> AlocarAtivo
-    Admin --> CadastroUsuario
-    Admin --> GerarRelatorio
+    USUARIO ||--o{ MOVIMENTACAO : realiza
+    ATIVO ||--o{ MOVIMENTACAO : possui
 
-    Tecnico --> Login
-    Tecnico --> ConsultarAtivo
-    Tecnico --> Manutencao
-    Tecnico --> Movimentacao
-    Tecnico --> AtualizarStatus
+    ATIVO ||--o{ MANUTENCAO : recebe
 
-    Usuario --> Login
-    Usuario --> ConsultarEquipamento
-    Usuario --> SolicitarSuporte
-
-    AlocarAtivo -.include.-> ConsultarAtivo
-    Manutencao -.extend.-> AtualizarStatus
+    USUARIO ||--o{ CHAMADO : abre
+    ATIVO ||--o{ CHAMADO : relacionado
 ```
-
-## 🗄️ Regras de Negócio
-
-1. Todo ativo deve possuir um número de patrimônio único.
-2. Um ativo só poderá ser atribuído a um colaborador por vez.
-3. Toda movimentação deve ficar registrada no histórico.
-4. Equipamentos em manutenção não podem ser alocados.
-5. Apenas administradores podem excluir ativos.
-
-## 🛠️ Tecnologias e Conceitos
-
-- Engenharia de Software
-- UML
-- Casos de Uso
-- Análise de Requisitos
-- Modelagem de Sistemas
-- Banco de Dados
-- Governança de TI
-
-## 🚀 Melhorias Futuras
-
-- Dashboard de indicadores
-- Controle de garantias
-- Inventário por QR Code
-- Exportação de relatórios PDF
-- Integração com sistema de chamados
-- Alertas de manutenção preventiva
-
-## 👩‍💻 Desenvolvido por
-
-Maristela Costa
