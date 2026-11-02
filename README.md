@@ -1,32 +1,53 @@
-# 🖥️ Sistema de Inventário de TI
+# 🖥️ Sistema de Gestão de Ativos de TI (IT Asset Management)
 
 ## 📋 Sobre o Projeto
 
-O Sistema de Inventário de TI foi desenvolvido com o objetivo de apoiar o gerenciamento e controle dos ativos tecnológicos de uma organização. O projeto contempla o cadastro, consulta, manutenção e movimentação de equipamentos de TI, proporcionando maior organização, rastreabilidade e suporte à governança tecnológica.
+O Sistema de Gestão de Ativos de TI foi desenvolvido para apoiar o gerenciamento, controle e rastreabilidade dos recursos tecnológicos de uma organização.
+
+A solução permite o cadastro, acompanhamento e monitoramento de equipamentos, usuários, movimentações, manutenções e chamados técnicos, contribuindo para a governança de TI e controle patrimonial.
 
 ---
 
 ## 🎯 Objetivos
 
-- Controlar ativos de TI da organização.
-- Registrar movimentações de equipamentos.
-- Gerenciar manutenções preventivas e corretivas.
-- Controlar responsáveis pelos ativos.
+- Gerenciar ativos tecnológicos da organização.
+- Controlar o ciclo de vida dos equipamentos.
+- Registrar manutenções preventivas e corretivas.
+- Controlar movimentações entre setores.
+- Gerenciar chamados de suporte.
 - Disponibilizar informações para tomada de decisão.
 - Apoiar processos de Governança de TI.
+
+---
+
+## 🏗️ Arquitetura da Solução
+
+O sistema foi projetado para centralizar o gerenciamento dos ativos tecnológicos em uma única plataforma.
+
+### Módulos
+
+- Gestão de Ativos
+- Gestão de Usuários
+- Gestão de Manutenções
+- Gestão de Movimentações
+- Gestão de Chamados
+- Relatórios Gerenciais
 
 ---
 
 ## 👥 Atores do Sistema
 
 ### Administrador
-Responsável pela gestão completa do inventário.
+
+Responsável pelo gerenciamento completo do sistema.
 
 ### Técnico de TI
+
 Responsável pela manutenção e atualização dos ativos.
 
 ### Colaborador
-Usuário final associado aos equipamentos.
+
+Usuário associado aos equipamentos ativos.
 
 ---
 
@@ -38,11 +59,12 @@ Usuário final associado aos equipamentos.
 - Exclusão de ativos
 - Consulta de ativos
 - Cadastro de usuários
+- Alocação de equipamentos
 - Controle de movimentações
 - Registro de manutenções
-- Acompanhamento de histórico
-- Abertura de chamados
-- Emissão de relatórios gerenciais
+- Histórico de alterações
+- Gestão de chamados
+- Emissão de relatórios
 
 ---
 
@@ -152,78 +174,57 @@ erDiagram
     }
 
     USUARIO ||--o{ MOVIMENTACAO : realiza
+
     ATIVO ||--o{ MOVIMENTACAO : possui
 
     ATIVO ||--o{ MANUTENCAO : recebe
 
     USUARIO ||--o{ CHAMADO : abre
+
     ATIVO ||--o{ CHAMADO : relacionado
 ```
 
 ---
 
-## 📜 Regras de Negócio
+## 🏗️ Diagrama de Classes UML
 
-1. Cada ativo deve possuir um número de patrimônio único.
-2. Um ativo não pode ser vinculado simultaneamente a mais de um colaborador.
-3. Toda movimentação deve ser registrada no histórico.
-4. Equipamentos em manutenção não podem ser alocados.
-5. Apenas administradores podem excluir ativos.
-6. Toda manutenção deve possuir data e descrição.
-7. Chamados devem estar vinculados a um usuário e a um ativo.
+```mermaid
+classDiagram
 
----
+class Usuario {
+    +int idUsuario
+    +String nome
+    +String email
+    +String departamento
+    +String cargo
+    +String telefone
 
-## 📊 Indicadores Gerenciais
+    +consultarAtivos()
+    +abrirChamado()
+}
 
-O sistema pode fornecer indicadores como:
+class Ativo {
+    +int idAtivo
+    +String patrimonio
+    +String nome
+    +String categoria
+    +String fabricante
+    +String modelo
+    +String numeroSerie
+    +String status
+    +Date dataAquisicao
 
-- Quantidade total de ativos
-- Ativos por categoria
-- Ativos em manutenção
-- Ativos disponíveis
-- Ativos por departamento
-- Histórico de movimentações
-- Chamados em aberto
-- Custos com manutenção
+    +cadastrar()
+    +editar()
+    +consultar()
+    +atualizarStatus()
+}
 
----
+class Manutencao {
+    +int idManutencao
+    +Date dataManutencao
+    +String tipo
+    +String descricao
+    +Double custo
 
-## 🛠️ Tecnologias e Conceitos Aplicados
-
-- Engenharia de Software
-- UML
-- Casos de Uso
-- Modelagem de Banco de Dados
-- Regras de Negócio
-- Governança de TI
-- Gestão de Ativos de TI (IT Asset Management)
-- Banco de Dados Relacional
-- Levantamento de Requisitos
-
----
-
-## 🚀 Melhorias Futuras
-
-- Dashboard em Power BI
-- Integração com API REST
-- Controle de licenças de software
-- Geração de relatórios PDF
-- Inventário por QR Code
-- Controle de garantias
-- Sistema de notificações
-- Integração com Service Desk
-
----
-
-## 👩‍💻 Desenvolvido por
-
-**Maristela Costa**
-
-Bacharel em Sistemas de Informação
-
-MBA em Cibersegurança e Proteção de Dados (em andamento)
-
-MBA em Business Intelligence, Big Data e Analytics (em andamento)
-
-GitHub: github.com/maristelacosta
+    +registrar(
